@@ -11,8 +11,6 @@ RUN apt-get update && \
 ENV SPARK_EXTRA_JARS_DIR=/opt/spark/jars/
 ENV SPARK_EXTRA_CLASSPATH='/opt/spark/jars/*'
 RUN mkdir -p "${SPARK_EXTRA_JARS_DIR}"
-# Download additional jars to here if required
-# COPY *.jar "${SPARK_EXTRA_JARS_DIR}"
 
 # Optional: Install and configure Miniconda3.
 ENV CONDA_HOME=/opt/miniconda3
@@ -20,7 +18,7 @@ ENV PYSPARK_PYTHON=${CONDA_HOME}/bin/python
 ENV PYSPARK_DRIVER_PYTHON=${CONDA_HOME}/bin/python
 
 ENV PATH=${CONDA_HOME}/bin:${PATH}
-RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh
+RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 RUN bash miniconda.sh -b -p /opt/miniconda3 \
   && ${CONDA_HOME}/bin/conda config --system --set always_yes True \
   && ${CONDA_HOME}/bin/conda config --system --set auto_update_conda False \
@@ -31,6 +29,8 @@ RUN bash miniconda.sh -b -p /opt/miniconda3 \
 #
 # The following packages are installed in the default image. It is strongly
 # recommended to include all of them.
+#
+# For Production use it would be best to lock the versions if those packages are critical
 #
 # Use mamba to install packages quickly.
 RUN ${CONDA_HOME}/bin/conda install mamba -n base -c conda-forge \
@@ -81,9 +81,14 @@ RUN ${CONDA_HOME}/bin/conda install mamba -n base -c conda-forge \
       sympy \
       virtualenv
 
+### !!!Try not to chnage everything above this line often as build time can be extensive!!! ###
+
 # Optional: Add extra Python modules.
 ENV PYTHONPATH=/opt/python/packages
 RUN mkdir -p "${PYTHONPATH}"
+
+# Add additional jars to here if required
+#COPY *.jar "${SPARK_EXTRA_JARS_DIR}"
 
 # Add additional python modules if required
 #COPY test_util.py "${PYTHONPATH}"
