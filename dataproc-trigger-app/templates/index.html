@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataproc Trigger App</title>
+    <!-- Add the Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mt-5">Dataproc Trigger App</h1>
+            <p class="lead">Click the button below to submit a request.</p>
+            <form action="/submit" method="post">
+                <button type="submit" class="btn btn-primary">Trigger job</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add the Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

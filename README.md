@@ -8,7 +8,7 @@ This command will generate a 260MB file with random words, you can upload it to 
 openssl rand -out example/sample_1.txt -base64 $(( 2**28 * 3/4 ))
 ```
 
-## Build the spark custom docker image
+## Run spark on serverless dataproc
 
 ### Env vars
 
@@ -100,8 +100,25 @@ python dataproc_submit.py "gs://[code bucket]/wordcount.py" \
     "gs://[output bucket]"
 ```
 
-## Run locally
+### Run locally
 
 ```
 spark-submit wordcount.py "./example/*.txt" /tmp
+```
+
+## Deploy the single-button-app to trigger dataproc job
+> Move working directory to `dataproc-trigger-app` before running the commands below
+
+Additional App env var requires
+```
+export APP_SA=[APP_SA]
+export APP_IMAGE_NAME=[APP_IMAGE_NAME]
+export PYTHON_FILE_URL=[PYTHON_FILE_URL]
+export SOURCE_INPUT_LOCATION=[SOURCE_INPUT_LOCATION]
+export TARGET_OUTPUT_LOCATION=[SOURCE_INPUT_LOCATION]
+```
+
+Build & Deploy
+```
+gcloud builds submit --config cloudbuild.yaml --substitutions _PROJECT_ID=${PROJECT_ID},_REGION=${REGION},_SA=${APP_SA},_AF_REPO_NAME=${AF_REPO_NAME},_IMAGE_NAME=${IMAGE_NAME},_APP_IMAGE_NAME=${APP_IMAGE_NAME},_COMMIT_SHA=${COMMIT_SHA},_IMAGE_VERSION=${IMAGE_VERSION},_PROCESS_BUCKET=${PROCESS_BUCKET},_SPARK_SA=${SPARK_SA},_SUBNET=${SUBNET},_PYTHON_FILE_URL=${PYTHON_FILE_URL},_SOURCE_INPUT_LOCATION=${SOURCE_INPUT_LOCATION},_TARGET_OUTPUT_LOCATION=${TARGET_OUTPUT_LOCATION}
 ```

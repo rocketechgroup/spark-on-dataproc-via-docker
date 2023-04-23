@@ -1,0 +1,32 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'europe-west2-docker.pkg.dev/${_PROJECT_ID}/${_AF_REPO_NAME}/${_APP_IMAGE_NAME}:${_COMMIT_SHA}', '.' ]
+
+  # Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'europe-west2-docker.pkg.dev/${_PROJECT_ID}/${_AF_REPO_NAME}/${_APP_IMAGE_NAME}:${_COMMIT_SHA}' ]
+
+  # Deploy as a cloud run service
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'dataproc-trigger-app'
+      - '--image=europe-west2-docker.pkg.dev/${_PROJECT_ID}/${_AF_REPO_NAME}/${_APP_IMAGE_NAME}:${_COMMIT_SHA}'
+      - '--platform=managed'
+      - '--region=${_REGION}'
+      - '--allow-unauthenticated'
+      - '--service-account=${_SA}'
+      - '--set-env-vars=PROJECT_ID=${_PROJECT_ID}'
+      - '--set-env-vars=REGION=${_REGION}'
+      - '--set-env-vars=AF_REPO_NAME=${_AF_REPO_NAME}'
+      - '--set-env-vars=IMAGE_NAME=${_IMAGE_NAME}'
+      - '--set-env-vars=IMAGE_VERSION=${_IMAGE_VERSION}'
+      - '--set-env-vars=PROCESS_BUCKET=${_PROCESS_BUCKET}'
+      - '--set-env-vars=SPARK_SA=${_SPARK_SA}'
+      - '--set-env-vars=SUBNET=${_SUBNET}'
+      - '--set-env-vars=PYTHON_FILE_URL=${_PYTHON_FILE_URL}'
+      - '--set-env-vars=SOURCE_INPUT_LOCATION=${_SOURCE_INPUT_LOCATION}'
+      - '--set-env-vars=TARGET_OUTPUT_LOCATION=${_TARGET_OUTPUT_LOCATION}'
