@@ -75,8 +75,8 @@ def spark_submit(python_file_url, source_input, target_output):
             "containerImage": f"europe-west2-docker.pkg.dev/{PROJECT_ID}/{AF_REPO_NAME}/{IMAGE_NAME}:{IMAGE_VERSION}",
             "properties": {
                 "spark.dynamicAllocation.executorAllocationRatio": "1.0",
-                "spark.dynamicAllocation.initialExecutors": "1",
-                "spark.dynamicAllocation.minExecutors": "1",
+                "spark.dynamicAllocation.initialExecutors": "2",
+                "spark.dynamicAllocation.minExecutors": "2",
                 "spark.dynamicAllocation.maxExecutors": "50"
             }
         },
