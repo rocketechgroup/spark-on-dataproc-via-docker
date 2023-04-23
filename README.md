@@ -48,7 +48,7 @@ export IMAGE_VERSION=[IMAGE_VERSION]
 export PROCESS_BUCKET=[PROCESS_BUCKET]
 ```
 
-### Set Service account to use for the customer
+### Set Service account to use for Dataproc
 
 > Please note SA must have at least the following roles: `Artifact Registry Reader,Dataproc Worker, Storage Object Admin`
 
