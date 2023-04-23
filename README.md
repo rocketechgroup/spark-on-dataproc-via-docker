@@ -50,8 +50,7 @@ export PROCESS_BUCKET=[PROCESS_BUCKET]
 
 ### Set Service account to use for the customer
 
-> please note SA must have at least the following
-> permissions `Artifact Registry Reader,Dataproc WorkerStorage Object Admin`
+> Please note SA must have at least the following roles: `Artifact Registry Reader,Dataproc Worker, Storage Object Admin`
 
 ```
 export SPARK_SA=[SPARK_SA]
@@ -106,7 +105,7 @@ python dataproc_submit.py "gs://[code bucket]/wordcount.py" \
 spark-submit wordcount.py "./example/*.txt" /tmp
 ```
 
-## Deploy the single-button-app to trigger dataproc job
+## Deploy the dataproc-trigger-app to trigger dataproc job
 > Move working directory to `dataproc-trigger-app` before running the commands below
 
 Additional App env var requires
@@ -117,6 +116,8 @@ export PYTHON_FILE_URL=[PYTHON_FILE_URL]
 export SOURCE_INPUT_LOCATION=[SOURCE_INPUT_LOCATION]
 export TARGET_OUTPUT_LOCATION=[SOURCE_INPUT_LOCATION]
 ```
+
+> The service account here will require the following roles: `Dataproc Administrator`, `Service Account Token Creator` and `Service Account User`
 
 Build & Deploy
 ```
